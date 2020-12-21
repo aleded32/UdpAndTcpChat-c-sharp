@@ -109,8 +109,8 @@ namespace NetcatApplication
                     public netcatUdpClient()
                     {
                         client.Client.Bind(RemoteIpEndPoint);
-                        new Thread(recieveText).Start();
                         new Thread(sendText).Start();
+                        new Thread(recieveText).Start();
                         f1.rxTextBox.AppendText("UdpClientActive" + Environment.NewLine);
                         
                     }
@@ -132,12 +132,136 @@ namespace NetcatApplication
                 }
             }
 
+            class netcatTcp
+            {
+                class netcatTcpServer 
+                {
+                    StreamReader sr;
+                    StreamWriter sw;
+
+                    void tx(Object sender, EventArgs Event)
+                    {
+                            String txMessage = f1.txTextBox.Text;
+                            if(txMessage != "")
+                            {
+                                sw.WriteLine(txMessage);
+                                f1.rxTextBox.AppendText("server > " + txMessage + Environment.NewLine);
+                            }
+                    }
+
+                    String rx()
+                    {
+                       String rxMessage = sr.ReadLine();
+                       f1.rxTextBox.AppendText("client > " + rxMessage + Environment.NewLine);
+                        return rxMessage;
+                    }
+
+                    void sendText() 
+                    {
+                        if (rx() != "")
+                            f1.sendButton.Click += tx;
+                    }
+
+                    void recieveText() 
+                    {
+                        while (true)
+                            rx();
+                        
+                    }
+
+                    public netcatTcpServer()
+                    {
+                        f1.rxTextBox.AppendText("TcpServerActive" + Environment.NewLine);
+                        TcpListener listener = new TcpListener(IPAddress.Parse(f1.RAddressText.Text), int.Parse(f1.LPortText.Text));
+                        listener.Start();
+                        TcpClient Client = listener.AcceptTcpClient();
+                        sr = new StreamReader(Client.GetStream());
+                        sw = new StreamWriter(Client.GetStream());
+                        sw.AutoFlush = true;
+                        
+                        new Thread(sendText).Start();
+                        new Thread(recieveText).Start();
+                        
+                        
+                    }
+                }
+
+                class netcatTcpClient 
+                {
+                    StreamReader sr;
+                    StreamWriter sw;
+
+                    void tx(Object sender, EventArgs Event)
+                    {
+                            String txMessage = f1.txTextBox.Text;
+                            if(txMessage != "")
+                            {
+                                sw.WriteLine(txMessage);
+                                f1.rxTextBox.AppendText("client > " + txMessage + Environment.NewLine);
+                            }
+                    }
+
+                    String rx()
+                    {
+                       String rxMessage = sr.ReadLine();
+                       f1.rxTextBox.AppendText("server > " + rxMessage + Environment.NewLine);
+                        return rxMessage;
+                    }
+
+                    void sendText() 
+                    {
+                            f1.sendButton.Click += tx;
+                    }
+
+                    void recieveText() 
+                    {
+                        while (true)
+                            rx();
+                        
+                    }
+
+                    public netcatTcpClient()
+                    {
+                        f1.rxTextBox.AppendText("TcpServerActive" + Environment.NewLine);
+                        TcpClient Client = new TcpClient(f1.RAddressText.Text, int.Parse(f1.RPortText.Text));
+                        sr = new StreamReader(Client.GetStream());
+                        sw = new StreamWriter(Client.GetStream());
+                        sw.AutoFlush = true;
+                        
+                        new Thread(sendText).Start();
+                        new Thread(recieveText).Start();
+                        
+                        
+                    }
+                }
+
+                public netcatTcp() 
+                {
+                    if (f1.roleList.SelectedIndex == 2)
+                    {
+                        
+                        new netcatTcpServer();
+
+                    }
+                    else if (f1.roleList.SelectedIndex == 3)
+                    {
+                        new netcatTcpClient();
+
+                    }
+                }
+            }
+
             public netcat() 
             {
 
                 if (f1.roleList.SelectedIndex == 0 || f1.roleList.SelectedIndex == 1)
                 {
                     new netcatUdp();
+                }
+                else if (f1.roleList.SelectedIndex == 2 || f1.roleList.SelectedIndex == 3) 
+                {
+                    
+                    new netcatTcp();
                 }
             }
         }
@@ -154,8 +278,9 @@ namespace NetcatApplication
 
         private void startButton_Click(Object sender, EventArgs Event)
         {
+
            if(RAddressText.Text != "" && RPortText.Text != "" || LPortText.Text != "")
-            new netcat();
+                new netcat();
 
         }
 
