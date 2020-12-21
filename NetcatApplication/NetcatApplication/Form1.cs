@@ -17,7 +17,6 @@ namespace NetcatApplication
     public partial class Form1 : Form
     {
         public static Form1 f1 = null;
-        delegate void SetTextCallback(string text);
 
         class netcat 
         {
@@ -119,12 +118,12 @@ namespace NetcatApplication
 
                 public netcatUdp() 
                 {
-                    if (f1.roleList.SelectedIndex == 0) 
+                    if (f1.roleList.SelectedIndex == 0 && f1.LPortText.Text != "") 
                     {
                         new netcatUdpServer();
                         
                     }
-                    else if (f1.roleList.SelectedIndex == 1)
+                    else if (f1.roleList.SelectedIndex == 1 && f1.RPortText.Text != "")
                     {
                         new netcatUdpClient();
 
@@ -222,7 +221,7 @@ namespace NetcatApplication
 
                     public netcatTcpClient()
                     {
-                        f1.rxTextBox.AppendText("TcpServerActive" + Environment.NewLine);
+                        f1.rxTextBox.AppendText("TcpClientActive" + Environment.NewLine);
                         TcpClient Client = new TcpClient(f1.RAddressText.Text, int.Parse(f1.RPortText.Text));
                         sr = new StreamReader(Client.GetStream());
                         sw = new StreamWriter(Client.GetStream());
@@ -237,13 +236,13 @@ namespace NetcatApplication
 
                 public netcatTcp() 
                 {
-                    if (f1.roleList.SelectedIndex == 2)
+                    if (f1.roleList.SelectedIndex == 2 && f1.LPortText.Text != "")
                     {
                         
                         new netcatTcpServer();
 
                     }
-                    else if (f1.roleList.SelectedIndex == 3)
+                    else if (f1.roleList.SelectedIndex == 3 && f1.RPortText.Text != "")
                     {
                         new netcatTcpClient();
 
