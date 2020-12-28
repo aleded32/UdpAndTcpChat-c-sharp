@@ -74,9 +74,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(569, 69);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(173, 17);
+            this.label2.Size = new System.Drawing.Size(91, 17);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Remote Port: (Client Only)";
+            this.label2.Text = "Remote Port:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label3
@@ -84,10 +84,11 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(569, 125);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(165, 17);
+            this.label3.Size = new System.Drawing.Size(76, 17);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Local Port: (Server Only)";
+            this.label3.Text = "Local Port:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4
             // 

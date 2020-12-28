@@ -33,7 +33,7 @@ namespace NetcatApplication
                             if (txMessage != "")
                             {
                                 f1.rxTextBox.AppendText("server > " + txMessage + Environment.NewLine);
-                                client.Send(Encoding.ASCII.GetBytes(txMessage), txMessage.Length, RemoteIpEndPoint.Address.ToString(), Convert.ToInt32(RemoteIpEndPoint.Port));
+                                client.Send(Encoding.ASCII.GetBytes(txMessage), txMessage.Length, RemoteIpEndPoint.Address.ToString(), Convert.ToInt32(f1.RPortText.Text));
                                
                             }
                     }
@@ -72,7 +72,7 @@ namespace NetcatApplication
                 class netcatUdpClient 
                 {
                     UdpClient client = new UdpClient();
-                    IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                    IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, int.Parse(f1.RPortText.Text));
                
 
                    void tx(Object sender, EventArgs Event)
@@ -81,7 +81,7 @@ namespace NetcatApplication
                            if (txMessage != "")
                            {
                                f1.rxTextBox.AppendText("client > " + txMessage + Environment.NewLine);
-                               client.Send(Encoding.ASCII.GetBytes(txMessage), txMessage.Length, f1.RAddressText.Text, int.Parse(f1.RPortText.Text));
+                               client.Send(Encoding.ASCII.GetBytes(txMessage), txMessage.Length, f1.RAddressText.Text, int.Parse(f1.LPortText.Text));
                            }
                    }
 
@@ -290,6 +290,11 @@ namespace NetcatApplication
         private void quitButton_Click(object sender, EventArgs e)
         {
             System.Environment.Exit(0);
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
 
         
