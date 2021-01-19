@@ -34,6 +34,7 @@ namespace NetcatApplication
                             {
                                 f1.rxTextBox.AppendText("server > " + txMessage + Environment.NewLine);
                                 client.Send(Encoding.ASCII.GetBytes(txMessage), txMessage.Length, RemoteIpEndPoint.Address.ToString(), Convert.ToInt32(f1.RPortText.Text));
+                                f1.txTextBox.Clear();
                                
                             }
                     }
@@ -46,7 +47,7 @@ namespace NetcatApplication
 
                     void sendText() 
                     {
-                        if (rx() != "")
+                        if (f1.rxTextBox.Text != null)
                         {
                             f1.sendButton.Click += tx;
                         }
@@ -82,6 +83,7 @@ namespace NetcatApplication
                            {
                                f1.rxTextBox.AppendText("client > " + txMessage + Environment.NewLine);
                                client.Send(Encoding.ASCII.GetBytes(txMessage), txMessage.Length, f1.RAddressText.Text, int.Parse(f1.LPortText.Text));
+                               f1.txTextBox.Clear();
                            }
                    }
 
@@ -108,7 +110,7 @@ namespace NetcatApplication
                     public netcatUdpClient()
                     {
                         client.Client.Bind(RemoteIpEndPoint);
-                        new Thread(sendText).Start();
+                        sendText();
                         new Thread(recieveText).Start();
                         f1.rxTextBox.AppendText("UdpClientActive" + Environment.NewLine);
                         
@@ -145,6 +147,7 @@ namespace NetcatApplication
                             {
                                 sw.WriteLine(txMessage);
                                 f1.rxTextBox.AppendText("server > " + txMessage + Environment.NewLine);
+                                f1.txTextBox.Clear();
                             }
                     }
 
@@ -157,7 +160,7 @@ namespace NetcatApplication
 
                     void sendText() 
                     {
-                        if (rx() != "")
+                        if (f1.rxTextBox.Text != null)
                             f1.sendButton.Click += tx;
                     }
 
@@ -197,6 +200,7 @@ namespace NetcatApplication
                             {
                                 sw.WriteLine(txMessage);
                                 f1.rxTextBox.AppendText("client > " + txMessage + Environment.NewLine);
+                                f1.txTextBox.Clear();
                             }
                     }
 
